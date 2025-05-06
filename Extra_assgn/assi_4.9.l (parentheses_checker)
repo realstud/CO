@@ -1,5 +1,7 @@
 %{
 #include <stdio.h>
+#include <string.h>
+
 int round_c = 0, curly = 0, square = 0;
 %}
 
@@ -16,11 +18,19 @@ int round_c = 0, curly = 0, square = 0;
 int yywrap() { return 1; }
 
 int main() {
+    char input[1024];
+
     printf("Enter expression with parentheses: ");
+    fgets(input, sizeof(input), stdin);
+
+    YY_BUFFER_STATE buffer = yy_scan_string(input);
     yylex();
+    yy_delete_buffer(buffer);
+
     if (round_c == 0 && curly == 0 && square == 0)
         printf("Balanced Parentheses\n");
     else
         printf("Unbalanced Parentheses\n");
+
     return 0;
 }
