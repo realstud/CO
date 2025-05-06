@@ -1,3 +1,4 @@
+//Type of data
 %{
 #include <stdio.h>
 %}
