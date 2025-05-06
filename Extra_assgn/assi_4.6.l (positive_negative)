@@ -1,0 +1,30 @@
+%{
+#include <stdio.h>
+#include <string.h>
+
+int positive = 0, negative = 0;
+%}
+
+%%
+-[0-9]+     { negative++; }
+[0-9]+      { positive++; }
+[ \t\n]+    ;  // Ignore whitespace
+.           ;  // Ignore any other characters
+%%
+
+int yywrap() { return 1; }
+
+int main() {
+    char input[1024];
+
+    printf("Enter numbers: ");
+    if (fgets(input, sizeof(input), stdin)) {
+        YY_BUFFER_STATE buffer = yy_scan_string(input);
+        yylex();
+        yy_delete_buffer(buffer);
+
+        printf("Positive Integers: %d\nNegative Integers: %d\n", positive, negative);
+    }
+
+    return 0;
+}
