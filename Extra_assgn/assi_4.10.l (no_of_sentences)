@@ -1,0 +1,27 @@
+%{
+#include <stdio.h>
+#include <string.h>
+
+int sentences = 0;
+%}
+
+%%
+[.!?]   { sentences++; }
+.|\n    ;  // Ignore everything else
+%%
+
+int yywrap() { return 1; }
+
+int main() {
+    char input[1024];
+
+    printf("Enter text: ");
+    fgets(input, sizeof(input), stdin);
+
+    YY_BUFFER_STATE buffer = yy_scan_string(input);
+    yylex();
+    yy_delete_buffer(buffer);
+
+    printf("Number of Sentences: %d\n", sentences);
+    return 0;
+}
