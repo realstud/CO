@@ -1,3 +1,4 @@
+//count the digits,letters,sp_chars
 %{
 #include <stdio.h>
 #include <string.h>
